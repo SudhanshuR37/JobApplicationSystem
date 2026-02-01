@@ -51,4 +51,21 @@ public class ApplicationService {
     public Page<Application> getApplicationsByUser(Long userId, Pageable pageable) {
         return applicationRepository.findByCandidateId(userId, pageable);
     }
+
+    public Application withdrawApplication(Long applicationId, Long candidateId) {
+        Application application = applicationRepository
+                .findByIdAndCandidateId(applicationId, candidateId)
+                .orElseThrow(() -> new ResourceNoteFoundException(
+                        "Application not found for this candidate"
+                ));
+
+        if(application.getStatus() == ApplicationStatus.WITHDRAWN) {
+            throw new InvalidApplicationStateException("Application already withdrawn");
+        }
+
+        application.setStatus(ApplicationStatus.WITHDRAWN);
+        application.setAppliedAt(application.getAppliedAt());
+
+        return applicationRepository.save(application);
+    }
 }

@@ -81,4 +81,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
+    //Handle Invalid Application State Exception
+    @ExceptionHandler(InvalidApplicationStateException.class)
+    public ResponseEntity<ApiErrorResponse> handleInvalidState(
+            InvalidApplicationStateException ex
+    ) {
+        ApiErrorResponse response = new ApiErrorResponse(
+                HttpStatus.BAD_Request.value(),
+                ex.getMessage(),
+                null,
+                LocalDateTime.now()
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_Request);
+    }
 }

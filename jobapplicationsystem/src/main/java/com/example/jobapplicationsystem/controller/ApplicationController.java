@@ -27,4 +27,15 @@ public class ApplicationController {
         return applicationService.getApplicationsByUser(userId, pageable)
                 .map(ApplicationMapper::toResponse);
     }
+
+    @PutMapping("/{applicationId}/withdraw")
+    public ApplicationResponse withdrawApplication(
+            @PathVariable Long applicationId,
+            @RequestParam Long candidateId
+    ) {
+        Application application =
+                applicationService.withdrawApplication(applicationId, candidateId);
+
+        return ApplicationMapper.toResponse(application);
+    }
 }
