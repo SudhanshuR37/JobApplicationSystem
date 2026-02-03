@@ -1,3 +1,19 @@
+package com.example.jobapplicationsystem.repository;
+
+import com.example.jobapplicationsystem.entity.Job;
+import com.example.jobapplicationsystem.entity.User;
+import com.example.jobapplicationsystem.enums.Role;
+import com.example.jobapplicationsystem.repository.JobRepository;
+import com.example.jobapplicationsystem.repository.UserRepository;
+
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @DataJpaTest
 class JobRepositoryTest {
 

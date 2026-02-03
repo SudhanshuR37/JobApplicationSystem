@@ -1,5 +1,9 @@
+package com.example.jobapplicationsystem.dto.request;
+
 import lombok.Data;
 import jakarta.validation.constraints.*;
+
+import com.example.jobapplicationsystem.enums.Role;
 
 @Data
 public class CreateUserRequest {

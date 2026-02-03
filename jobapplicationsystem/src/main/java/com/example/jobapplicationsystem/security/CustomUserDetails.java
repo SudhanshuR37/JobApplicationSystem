@@ -1,8 +1,13 @@
+package com.example.jobapplicationsystem.security;
+
 import org.springframework.security.core.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
+import java.util.Collection;
+
+import com.example.jobapplicationsystem.entity.User;
 
 public class CustomUserDetails implements UserDetails {
 

@@ -1,7 +1,21 @@
+package com.example.jobapplicationsystem.controller;
+
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
+
+import com.example.jobapplicationsystem.entity.Job;
+
+import com.example.jobapplicationsystem.service.ApplicationService;
+import com.example.jobapplicationsystem.service.JobService;
+
+import com.example.jobapplicationsystem.dto.request.CreateJobRequest;
+import com.example.jobapplicationsystem.dto.response.JobResponse;
+
+import com.example.jobapplicationsystem.mapper.JobMapper;
 
 @RestController
 @RequestMapping("/jobs")

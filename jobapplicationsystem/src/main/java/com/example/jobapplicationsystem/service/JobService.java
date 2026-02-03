@@ -1,7 +1,19 @@
+package com.example.jobapplicationsystem.service;
+
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
+
+import com.example.jobapplicationsystem.exception.ResourceNotFoundException;
+
+import com.example.jobapplicationsystem.entity.Job;
+import com.example.jobapplicationsystem.entity.User;
+
+import com.example.jobapplicationsystem.repository.JobRepository;
+import com.example.jobapplicationsystem.repository.UserRepository;
+
+import com.example.jobapplicationsystem.dto.request.CreateJobRequest;
 
 @Service
 public class JobService {

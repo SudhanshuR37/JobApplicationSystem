@@ -1,3 +1,5 @@
+package com.example.jobapplicationsystem.security;
+
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;

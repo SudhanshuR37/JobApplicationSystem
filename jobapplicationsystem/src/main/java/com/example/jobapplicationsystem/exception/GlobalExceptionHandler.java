@@ -87,12 +87,12 @@ public class GlobalExceptionHandler {
             InvalidApplicationStateException ex
     ) {
         ApiErrorResponse response = new ApiErrorResponse(
-                HttpStatus.BAD_Request.value(),
+                HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage(),
                 null,
                 LocalDateTime.now()
         );
 
-        return new ResponseEntity<>(response, HttpStatus.BAD_Request);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }

@@ -1,3 +1,26 @@
+package com.example.jobapplicationsystem.repository;
+
+import com.example.jobapplicationsystem.entity.Application;
+import com.example.jobapplicationsystem.entity.Job;
+import com.example.jobapplicationsystem.entity.User;
+
+import com.example.jobapplicationsystem.enums.Role;
+import com.example.jobapplicationsystem.enums.ApplicationStatus;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 @DataJpaTest
 class ApplicationRepositoryTest {
 
@@ -82,7 +105,7 @@ class ApplicationRepositoryTest {
         a1.setStatus(ApplicationStatus.APPLIED);
         a1.setAppliedAt(LocalDateTime.now());
 
-        applicationRepository.save(a1);
+        applicationRepository.saveAndFlush(a1);
 
         Application a2 = new Application();
         a2.setJob(job);
@@ -95,5 +118,4 @@ class ApplicationRepositoryTest {
                 () -> applicationRepository.saveAndFlush(a2)
         );
     }
-
 }

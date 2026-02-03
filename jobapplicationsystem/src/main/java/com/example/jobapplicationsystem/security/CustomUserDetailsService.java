@@ -1,5 +1,13 @@
+package com.example.jobapplicationsystem.security;
+
 import org.springframework.security.core.userdetails.*;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import org.springframework.stereotype.Service;
+
+import com.example.jobapplicationsystem.repository.UserRepository;
+
+import com.example.jobapplicationsystem.entity.User;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -11,7 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException{
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 

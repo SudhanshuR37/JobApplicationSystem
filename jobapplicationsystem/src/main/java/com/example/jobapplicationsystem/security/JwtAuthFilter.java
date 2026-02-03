@@ -1,9 +1,17 @@
+package com.example.jobapplicationsystem.security;
+
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+
+import io.jsonwebtoken.Claims;
 
 public class JwtAuthFilter extends OncePerRequestFilter {
 

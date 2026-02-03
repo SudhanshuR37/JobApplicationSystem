@@ -1,3 +1,5 @@
+package com.example.jobapplicationsystem.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;

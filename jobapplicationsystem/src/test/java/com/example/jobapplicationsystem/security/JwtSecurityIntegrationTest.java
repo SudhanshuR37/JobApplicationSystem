@@ -1,14 +1,40 @@
-@Autowired
-private MockMvc mockMvc;
+package com.example.jobapplicationsystem.security;
 
-@Autowired
-private UserRepository userRepository;
+import com.example.jobapplicationsystem.enums.Role;
+import com.example.jobapplicationsystem.entity.User;
+import com.example.jobapplicationsystem.repository.UserRepository;
 
-@Autowired
-private PasswordEncoder passwordEncoder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-@BeforeEach
-void setup() {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+class JwtSecurityIntegrationTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @BeforeEach
+    void setup() {
         userRepository.deleteAll();
 
         User candidate = new User();
@@ -25,9 +51,9 @@ void setup() {
 
         userRepository.save(candidate);
         userRepository.save(recruiter);
-}
+    }
 
-private String loginAndGetToken(String email) throws Exception {
+    private String loginAndGetToken(String email) throws Exception {
 
         String loginJson = """
         {
@@ -37,61 +63,56 @@ private String loginAndGetToken(String email) throws Exception {
         """.formatted(email);
 
         MvcResult result = mockMvc.perform(
-        post("/auth/login")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(loginJson)
-        )
-        .andExpect(status().isOk())
-        .andReturn();
+                        post("/auth/login")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(loginJson)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
 
         return result.getResponse().getContentAsString();
-}
+    }
 
-@Test
-void shouldLoginAndReturnJwtToken() throws Exception {
-
+    @Test
+    void shouldLoginAndReturnJwtToken() throws Exception {
         String token = loginAndGetToken("candidate@test.com");
 
         assertNotNull(token);
-        assertTrue(token.startsWith("ey"));
-}
+        assertTrue(token.startsWith("ey")); // JWT signature
+    }
 
-@Test
-void shouldRejectAccessWithoutJwt() throws Exception {
-
+    @Test
+    void shouldRejectAccessWithoutJwt() throws Exception {
         mockMvc.perform(get("/applications"))
-        .andExpect(status().isUnauthorized());
-}
+                .andExpect(status().isUnauthorized());
+    }
 
-@Test
-void candidateShouldAccessApplications() throws Exception {
-
+    @Test
+    void candidateShouldAccessApplications() throws Exception {
         String token = loginAndGetToken("candidate@test.com");
 
         mockMvc.perform(
-        get("/applications")
-        .header("Authorization", "Bearer " + token)
-        )
-        .andExpect(status().isOk());
-}
+                        get("/applications")
+                                .header("Authorization", "Bearer " + token)
+                )
+                .andExpect(status().isOk());
+    }
 
-@Test
-void candidateShouldNotCreateJob() throws Exception {
-
+    @Test
+    void candidateShouldNotCreateJob() throws Exception {
         String token = loginAndGetToken("candidate@test.com");
 
         mockMvc.perform(
-        post("/jobs")
-        .header("Authorization", "Bearer " + token)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content("{}")
-        )
-        .andExpect(status().isForbidden());
-}
+                        post("/jobs")
+                                .header("Authorization", "Bearer " + token)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{}")
+                )
+                .andExpect(status().isForbidden());
+    }
 
-@Test
-void recruiterShouldCreateJob() throws Exception {
-
+    @Test
+    void recruiterShouldCreateJob() throws Exception {
         String token = loginAndGetToken("recruiter@test.com");
 
         String jobJson = """
@@ -104,26 +125,20 @@ void recruiterShouldCreateJob() throws Exception {
         """;
 
         mockMvc.perform(
-        post("/jobs")
-        .header("Authorization", "Bearer " + token)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(jobJson)
-        )
-        .andExpect(status().isOk());
-}
+                        post("/jobs")
+                                .header("Authorization", "Bearer " + token)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(jobJson)
+                )
+                .andExpect(status().isOk());
+    }
 
-@Test
-void invalidJwtShouldBeRejected() throws Exception {
-
+    @Test
+    void invalidJwtShouldBeRejected() throws Exception {
         mockMvc.perform(
-        get("/applications")
-        .header("Authorization", "Bearer invalid.token.value")
-        )
-        .andExpect(status().isUnauthorized());
+                        get("/applications")
+                                .header("Authorization", "Bearer invalid.token.value")
+                )
+                .andExpect(status().isUnauthorized());
+    }
 }
-
-
-
-
-
-

@@ -1,4 +1,18 @@
+package com.example.jobapplicationsystem.controller;
+
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.*;
+
+import com.example.jobapplicationsystem.service.UserService;
+
+import com.example.jobapplicationsystem.entity.User;
+
+import com.example.jobapplicationsystem.mapper.UserMapper;
+
+import com.example.jobapplicationsystem.dto.request.CreateUserRequest;
+
+import com.example.jobapplicationsystem.dto.response.UserResponse;
 
 @RestController
 @RequestMapping("/users")

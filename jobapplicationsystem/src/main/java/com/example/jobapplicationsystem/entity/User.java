@@ -1,5 +1,9 @@
+package com.example.jobapplicationsystem.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
+
+import com.example.jobapplicationsystem.enums.Role;
 
 @Entity
 @Getter
@@ -20,7 +24,7 @@ public  class User {
     private String email;
 
     @Column(nullable = false)
-    private String = password;
+    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

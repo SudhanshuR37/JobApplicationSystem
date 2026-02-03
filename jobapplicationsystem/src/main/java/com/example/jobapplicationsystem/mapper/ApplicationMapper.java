@@ -1,3 +1,9 @@
+package com.example.jobapplicationsystem.mapper;
+
+import com.example.jobapplicationsystem.entity.Application;
+
+import com.example.jobapplicationsystem.dto.response.ApplicationResponse;
+
 public class ApplicationMapper {
 
     public static ApplicationResponse toResponse(Application app) {

@@ -1,6 +1,10 @@
+package com.example.jobapplicationsystem.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
+
+import com.example.jobapplicationsystem.enums.ApplicationStatus;
 
 @Entity
 @Table(
@@ -22,11 +26,12 @@ public class Application {
     @JoinColumn(name = "candidate_id", nullable=false)
     private User candidate;
 
+    @ManyToOne
+    @JoinColumn(name = "job_id", nullable = false)
+    private Job job;
+
     @Enumerated(EnumType.STRING)
     private ApplicationStatus status;
 
     private LocalDateTime appliedAt;
-
-
-
 }

@@ -1,3 +1,36 @@
+package com.example.jobapplicationsystem.service;
+
+import com.example.jobapplicationsystem.dto.request.ApplyJobRequest;
+import com.example.jobapplicationsystem.entity.Application;
+import com.example.jobapplicationsystem.entity.Job;
+import com.example.jobapplicationsystem.entity.User;
+import com.example.jobapplicationsystem.enums.ApplicationStatus;
+import com.example.jobapplicationsystem.enums.Role;
+import com.example.jobapplicationsystem.exception.DuplicateApplicationException;
+import com.example.jobapplicationsystem.exception.InvalidApplicationStateException;
+import com.example.jobapplicationsystem.exception.ResourceNotFoundException;
+import com.example.jobapplicationsystem.repository.ApplicationRepository;
+import com.example.jobapplicationsystem.repository.JobRepository;
+import com.example.jobapplicationsystem.repository.UserRepository;
+import com.example.jobapplicationsystem.service.ApplicationService;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 @ExtendWith(MockitoExtension.class)
 class ApplicationServiceTest {
 

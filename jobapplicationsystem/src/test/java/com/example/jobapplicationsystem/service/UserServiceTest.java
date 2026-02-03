@@ -1,3 +1,26 @@
+package com.example.jobapplicationsystem.service;
+
+import com.example.jobapplicationsystem.dto.request.CreateUserRequest;
+import com.example.jobapplicationsystem.entity.User;
+import com.example.jobapplicationsystem.enums.Role;
+import com.example.jobapplicationsystem.repository.UserRepository;
+import com.example.jobapplicationsystem.service.UserService;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 

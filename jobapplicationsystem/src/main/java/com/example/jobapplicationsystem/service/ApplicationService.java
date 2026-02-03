@@ -1,8 +1,26 @@
+package com.example.jobapplicationsystem.service;
+
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.example.jobapplicationsystem.exception.DuplicateApplicationException;
+import com.example.jobapplicationsystem.exception.ResourceNotFoundException;
+import com.example.jobapplicationsystem.exception.InvalidApplicationStateException;
+
+import com.example.jobapplicationsystem.entity.Application;
+import com.example.jobapplicationsystem.entity.Job;
+import com.example.jobapplicationsystem.entity.User;
+
+import com.example.jobapplicationsystem.enums.ApplicationStatus;
+
+import com.example.jobapplicationsystem.repository.ApplicationRepository;
+import com.example.jobapplicationsystem.repository.JobRepository;
+import com.example.jobapplicationsystem.repository.UserRepository;
+
+import com.example.jobapplicationsystem.dto.request.ApplyJobRequest;
 
 @Service
 public class ApplicationService {
@@ -55,7 +73,7 @@ public class ApplicationService {
     public Application withdrawApplication(Long applicationId, Long candidateId) {
         Application application = applicationRepository
                 .findByIdAndCandidateId(applicationId, candidateId)
-                .orElseThrow(() -> new ResourceNoteFoundException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Application not found for this candidate"
                 ));
 
