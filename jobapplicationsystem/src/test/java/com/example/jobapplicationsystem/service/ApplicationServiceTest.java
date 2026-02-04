@@ -65,10 +65,6 @@ class ApplicationServiceTest {
         request.setJobId(1L);
         request.setCandidateId(2L);
 
-        when(applicationRepository
-                .existsByJobIdAndCandidateId(1L, 2L))
-                .thenReturn(false);
-
         when(jobRepository.findById(1L))
                 .thenReturn(Optional.of(job));
 

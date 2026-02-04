@@ -5,12 +5,20 @@ import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Value;
+
+import org.springframework.stereotype.Component;
+
+@Component
 public class JwtUtil {
 
     private static final Key key =
             Keys.hmacShaKeyFor("my-super-secret-jwt-key-1234567890".getBytes());
 
     private static final long EXPIRATION = 1000 * 60 * 60; // 1 hour
+
+    @Value("${jwt.secret}")
+    private String secret;
 
     public static String generateToken(String username, String role) {
         return Jwts.builder()

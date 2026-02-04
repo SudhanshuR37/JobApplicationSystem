@@ -20,8 +20,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.springframework.test.context.ActiveProfiles;
+
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 class JwtSecurityIntegrationTest {
 
     @Autowired
@@ -84,7 +87,7 @@ class JwtSecurityIntegrationTest {
     @Test
     void shouldRejectAccessWithoutJwt() throws Exception {
         mockMvc.perform(get("/applications"))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test

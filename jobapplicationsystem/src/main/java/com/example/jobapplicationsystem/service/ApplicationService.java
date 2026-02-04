@@ -38,12 +38,11 @@ public class ApplicationService {
     }
 
     public Application applyToJob(ApplyJobRequest request) {
-        boolean alreadyApplied = applicationRepository
-                .findByJobIdAndCandidateId(
+        boolean alreadyApplied =
+                applicationRepository.existsByJobIdAndCandidateId(
                         request.getJobId(),
                         request.getCandidateId()
-                )
-                .isPresent();
+                );
 
         if (alreadyApplied) {
             throw new DuplicateApplicationException(

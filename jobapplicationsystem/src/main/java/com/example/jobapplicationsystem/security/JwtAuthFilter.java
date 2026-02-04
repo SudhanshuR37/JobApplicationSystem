@@ -9,16 +9,23 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.example.jobapplicationsystem.security.JwtUtil;
+
 import java.io.IOException;
 
 import io.jsonwebtoken.Claims;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final CustomUserDetailsService userDetailsService;
+    private final JwtUtil jwtUtil;
 
-    public JwtAuthFilter(CustomUserDetailsService service) {
+    public JwtAuthFilter(CustomUserDetailsService service, JwtUtil jwtUtil) {
         this.userDetailsService = service;
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
@@ -30,8 +37,18 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
+
             String token = authHeader.substring(7);
-            Claims claims = JwtUtil.validateToken(token);
+
+            Claims claims;
+
+            try {
+                claims = jwtUtil.validateToken(token);
+            } catch (Exception e) {
+                chain.doFilter(request, response);
+                return;
+            }
+
             String email = claims.getSubject();
 
             UserDetails userDetails =

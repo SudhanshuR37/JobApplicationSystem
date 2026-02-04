@@ -13,8 +13,12 @@ import com.example.jobapplicationsystem.dto.request.ApplyJobRequest;
 import com.example.jobapplicationsystem.dto.response.ApplicationResponse;
 
 import com.example.jobapplicationsystem.entity.Application;
+import com.example.jobapplicationsystem.entity.User;
 
 import com.example.jobapplicationsystem.mapper.ApplicationMapper;
+
+import org.springframework.security.core.Authentication;
+import com.example.jobapplicationsystem.security.CustomUserDetails;
 
 @RestController
 @RequestMapping("/applications")
@@ -27,27 +31,41 @@ public class ApplicationController {
     }
 
     @PostMapping
-    public ApplicationResponse applyToJob(@Valid @RequestBody ApplyJobRequest request) {
+    public ApplicationResponse applyToJob(
+            @Valid @RequestBody ApplyJobRequest request,
+            Authentication authentication
+    ) {
+        CustomUserDetails user =
+                (CustomUserDetails) authentication.getPrincipal();
+
+        request.setCandidateId(user.getId());
+
         Application application = applicationService.applyToJob(request);
         return ApplicationMapper.toResponse(application);
     }
 
-    @GetMapping("/user/{userId}")
-    public Page<ApplicationResponse> getApplicationsByUser(
-            @PathVariable Long userId,
+    @GetMapping
+    public Page<ApplicationResponse> getMyApplications(
+            Authentication authentication,
             Pageable pageable
     ) {
-        return applicationService.getApplicationsByUser(userId, pageable)
+        CustomUserDetails user =
+                (CustomUserDetails) authentication.getPrincipal();
+
+        return applicationService.getApplicationsByUser(user.getId(), pageable)
                 .map(ApplicationMapper::toResponse);
     }
 
     @PutMapping("/{applicationId}/withdraw")
     public ApplicationResponse withdrawApplication(
             @PathVariable Long applicationId,
-            @RequestParam Long candidateId
+            Authentication authentication
     ) {
+        CustomUserDetails user =
+                (CustomUserDetails) authentication.getPrincipal();
+
         Application application =
-                applicationService.withdrawApplication(applicationId, candidateId);
+                applicationService.withdrawApplication(applicationId, user.getId());
 
         return ApplicationMapper.toResponse(application);
     }
